@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import 'activity.dart';
+import 'bedtime.dart';
 import 'ext.dart';
 import 'readiness.dart';
 import 'sleep.dart';
@@ -32,6 +33,12 @@ class Oura {
     final response = await get('activity', start: start, end: end);
     final activity = json.decode(response.body)['activity'] as List;
     return activity.map((activity) => Activity.fromJson(activity)).toList();
+  }
+
+  Future<List<Bedtime>> bedtime({DateTime? start, DateTime? end}) async {
+    final response = await get('bedtime', start: start, end: end);
+    final bedtime = json.decode(response.body)['ideal_bedtimes'] as List;
+    return bedtime.map((bedtime) => Bedtime.fromJson(bedtime)).toList();
   }
 
   Future<List<Readiness>> readiness({DateTime? start, DateTime? end}) async {
