@@ -2,6 +2,17 @@ import 'package:collection/collection.dart';
 
 import 'ext.dart';
 
+/// {@template oura.sleep}
+/// Sleep period is a nearly continuous, longish period of time spent lying down
+/// in bed. For each sleep period it detects, Oura ring performs sleep analysis
+/// and stores a set of measurement parameters that summarize the period. The
+/// ring calculates the sleep period specific parameters within four hours from
+/// the period end, but sleep analysis is always triggered when you open the
+/// application.
+/// {@endtemplate}
+///
+/// See also:
+///  * [Oura.sleep]
 class Sleep {
   Sleep({
     required this.summaryDate,
@@ -38,37 +49,147 @@ class Sleep {
     required this.rmssd5min,
   });
 
+  /// One day prior to the date when the sleep period ended.
+  ///
+  /// **Note:** this is one day before the date that is shown in the apps.
   final DateTime summaryDate;
+
+  /// Index of the sleep period among sleep periods with the same [summaryDate],
+  /// where 0 = first sleep period of the day.
   final int periodId;
+
   final bool isLongest;
+
+  /// Timezone offset from UTC as minutes. For example, EEST (Eastern European
+  /// Summer Time, +3h) is 180. PST (Pacific Standard Time, -8h) is -480. Note
+  /// that timezone information is also available in the datetime values
+  /// themselves.
   final int timezone;
+
+  /// Local time when the sleep period started
   final DateTime bedtimeStart;
+
+  /// Local time when the sleep period ended.
   final DateTime bedtimeEnd;
+
+  /// Sleep score represents overall sleep quality during the sleep period. It
+  /// is calculated as a weighted average of sleep score contributors that
+  /// represent one aspect of sleep quality each. The sleep score contributor
+  /// values are also available as separate parameters.
   final int score;
+
+  /// Represents total sleep time's (see [total]) contribution for sleep
+  /// quality. The value depends on age of the user - the younger, the more
+  /// sleep is needed for good score. The weight of [scoreTotal] in sleep score
+  /// calculation is 0.35.
   final int scoreTotal;
+
+  /// Represents sleep disturbances' contribution for sleep quality. Three
+  /// separate measurements are used to calculate this contributor value:
+  /// 1. Wake-up count - the more wake-ups, the lower the score.
+  /// 2. Got-up count - the more got-ups, the lower the score.
+  /// 3. Restless sleep ([restless]) - the more motion detected during
+  /// sleep, the lower the score.
+  ///
+  /// Each of these three values has weight 0.05 in sleep score calculation,
+  /// giving [scoreDisturbances] total weight of 0.15.
   final int scoreDisturbances;
+
+  /// Represents sleep efficiency's (see [efficiency]) contribution for sleep
+  /// quality. The higher efficiency, the higher score. The weight of
+  /// [scoreEfficiency] in sleep score calculation is 0.10.
   final int scoreEfficiency;
+
+  /// Represents sleep onset latency's (see [onsetLatency]) contribution for
+  /// sleep quality. A latency of about 15 minutes gives best score. Latency
+  /// longer than that many indicate problems falling asleep, whereas a very
+  /// short latency may be a sign of sleep debt. The weight of [scoreLatency] in
+  ///  sleep score calculation is 0.10.
   final int scoreLatency;
+
+  /// Represents REM sleep time's (see [rem]) contribution for sleep quality.
+  /// The value depends on age of the user - the younger, the more sleep REM is
+  /// needed for good score. The weight of [scoreRem] in sleep score calculation
+  /// is 0.10.
   final int scoreRem;
+
+  /// Represents deep (N3) sleep time's (see [deep]) contribution for sleep
+  /// quality. The value depends on age of the user - the younger, the more
+  /// sleep is needed for good score. The weight of [scoreDeep] in sleep score
+  /// calculation is 0.10.
   final int scoreDeep;
+
+  /// Represents circadian alignment's contribution for sleep score. Sleep
+  /// midpoint time ([midpointTime]) between 12PM and 3AM gives highest score.
+  /// The more the midpoint time deviates from that range, the lower the score.
+  /// The weigh of [scoreAlignment] in sleep score calculation is 0.10.
   final int scoreAlignment;
+
+  /// Total amount of sleep registered during the sleep period ([total] = [rem]
+  /// + [light] + [deep]).
   final int total;
+
+  /// Total duration of the sleep period ([duration] = [bedtimeEnd] -
+  /// [bedtimeStart]).
   final int duration;
+
+  /// Total amount of awake time registered during the sleep period.
   final int awake;
+
+  /// Total amount of light (N1 or N2) sleep registered during the sleep period.
   final int light;
+
+  /// Total amount of REM sleep registered during the sleep period.
   final int rem;
+
+  /// Total amount of deep (N3) sleep registered during the sleep period.
   final int deep;
+
+  /// Detected latency from [bedtimeStart] to the beginning of the first five
+  /// minutes of persistent sleep.
   final int onsetLatency;
+
+  /// Restlessness of the sleep time, i.e. percentage of sleep time when the
+  /// user was moving.
   final int restless;
+
+  /// Sleep efficiency is the percentage of the sleep period spent asleep (100%
+  /// * [total] / [duration]).
   final int efficiency;
+
+  /// The time in seconds from the start of sleep to the midpoint of sleep. The
+  ///  midpoint ignores awake periods.
   final int midpointTime;
+
+  /// The lowest heart rate (5 minutes sliding average) registered during the
+  /// sleep period.
   final double hrLowest;
+
+  /// The average heart rate registered during the sleep period.
   final double hrAverage;
+
+  /// The average HRV calculated with rMSSD method.
   final int rmssd;
+
+  /// Average respiratory rate.
   final double breathAverage;
+
+  /// Skin temperature deviation from the long-term temperature average.
   final double temperatureDelta;
+
+  /// A string that contains one character for each starting five minutes of the
+  /// sleep period, so that the first period starts from sleep.bedtime.start: -
+  /// '1' = deep (N3) sleep - '2' = light (N1 or N2) sleep - '3' = REM sleep -
+  /// '4' = awake
   final String hypnogram5min;
+
+  /// Average heart rate for each beginning 5 minutes of the sleep period, the
+  /// first period starting from [bedtimeStart].
   final List<int> hr5min;
+
+  /// The average HRV (calculated using rMSSD method) for each beginning 5
+  /// minutes of the sleep period, the first period starting from
+  /// [bedtimeStart].
   final List<int> rmssd5min;
 
   Sleep copyWith({

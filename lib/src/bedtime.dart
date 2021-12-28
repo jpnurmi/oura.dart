@@ -1,6 +1,22 @@
 import 'enums.dart';
 import 'ext.dart';
 
+/// {@template oura.bedtime}
+/// Ideal bedtime is an optimal bedtime window that is calculated based on your
+/// sleep data. If you're new to Oura, it will take a few weeks to receive your
+/// first ideal bedtime window. Having an irregular sleep schedule may also
+/// result in missing ideal bedtime data.
+///
+/// The start and end date (inclusive) define the period for the requested data
+/// period. If you omit the start date, it will be set to one week ago. If you
+/// omit the end date, it will be set to the current day.
+///
+/// **Note:** It is not guaranteed that an ideal bedtime window is calculated
+/// for every day. Days may be missing in the requested period.
+/// {@endtemplate}
+///
+/// See also:
+///  * [Oura.bedtime]
 class Bedtime {
   Bedtime({
     required this.date,
@@ -8,8 +24,13 @@ class Bedtime {
     required this.status,
   });
 
+  /// Date for which the ideal bedtime window was calculated.
   final DateTime date;
+
+  /// The ideal bedtime window.
   final BedtimeWindow bedtimeWindow;
+
+  /// The status indicates whether an ideal bedtime window is available and a reason if not.
   final BedtimeStatus status;
 
   Bedtime copyWith({
@@ -58,14 +79,26 @@ class Bedtime {
   int get hashCode => Object.hash(date.toDateString(), bedtimeWindow, status);
 }
 
+/// The beginning and end of the ideal bedtime window.
 class BedtimeWindow {
   BedtimeWindow({
     required this.start,
     required this.end,
   });
 
-  final int start;
-  final int end;
+  /// The beginning of the ideal bedtime window.
+  ///
+  /// The number represents an offset in seconds relative to midnight. The range
+  /// is `-43200` - `43200` where a negative number is before midnight and a
+  /// positive number is after midnight.
+  final int? start;
+
+  /// The end of the ideal bedtime window.
+  ///
+  /// The number represents an offset in seconds relative to midnight. The range
+  /// is `-43200` - `43200` where a negative number is before midnight and a
+  /// positive number is after midnight.
+  final int? end;
 
   BedtimeWindow copyWith({
     int? start,
@@ -86,8 +119,8 @@ class BedtimeWindow {
 
   factory BedtimeWindow.fromJson(Map<String, dynamic> json) {
     return BedtimeWindow(
-      start: json['start'] ?? 0,
-      end: json['end'] ?? 0,
+      start: json['start'],
+      end: json['end'],
     );
   }
 

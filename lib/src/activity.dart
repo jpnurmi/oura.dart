@@ -3,6 +3,18 @@ import 'package:collection/collection.dart';
 import 'enums.dart';
 import 'ext.dart';
 
+/// {@template oura.activity}
+/// Activity summary contains daily activity summary values and detailed
+/// activity levels. Activity levels are expresses in metabolic-equivalent
+/// minutes (MET mins). Oura tracks activity based on the movement.
+///
+/// Your Activity Score is an overall measure of how active you've been today,
+/// and over the past seven days. Activity contributors are calculated over
+/// several days.
+/// {@endtemplate}
+///
+/// See also:
+///  * [Oura.activity]
 class Activity {
   Activity({
     required this.summaryDate,
@@ -38,36 +50,193 @@ class Activity {
     required this.restModeState,
   });
 
+  /// Date when the activity period started. Oura activity period is from 4 AM
+  /// to 3:59 AM user's local time.
   final DateTime summaryDate;
+
+  /// UTC time when the activity day began. Oura activity day is usually from
+  /// 4AM to 4AM local time.
   final DateTime dayStart;
+
+  /// Date time UTC time when the activity day ended. Oura activity day is
+  /// usually from 4AM to 4AM local time.
   final DateTime dayEnd;
+
+  /// Timezone offset from UTC as minutes. For example, EEST (Eastern European
+  /// Summer Time, +3h) is 180. PST (Pacific Standard Time, -8h) is -480. Note
+  /// that timezone information is also available in the datetime values
+  /// themselves.
   final int timezone;
+
+  /// Activity score provides an estimate how well recent physical activity has
+  /// matched ring user's needs. It is calculated as a weighted average of
+  /// activity score contributors that represent one aspect of suitability of
+  /// the activity each. The contributor values are also available as separate
+  /// parameters.
   final int score;
+
+  /// This activity score contributor indicates how well the ring user has
+  /// managed to avoid of inactivity (sitting or standing still) during last 24
+  /// hours. The more inactivity, the lower contributor value.
+  ///
+  /// The contributor value is 100 when inactive time during past 24 hours is
+  /// below 5 hours. The contributor value is above 95 when inactive time during
+  ///  past 24 hours is below 7 hours.
+  ///
+  /// The weight of scoreStayActive in activity score calculation is 0.15.
   final int scoreStayActive;
+
+  /// This activity score contributor indicates how well the ring user has
+  /// managed to avoid long periods of inactivity (sitting or standing still)
+  /// during last 24 hours. The contributor includes number of continuous
+  /// inactive periods of 60 minutes or more (excluding sleeping). The more long
+  /// inactive periods, the lower contributor value.
+  ///
+  /// The contributor value is 100 when no continuous inactive periods of 60
+  /// minutes or more have been registered. The contributor value is above 95
+  /// when at most one continuous inactive period of 60 minutes or more has been
+  /// registered.
+  ///
+  /// The weight of scoreMoveEveryHour in activity score calculation is 0.10.
   final int scoreMoveEveryHour;
+
+  /// This activity score contributor indicates how often the ring user has
+  /// reached his/her daily activity target during seven last days (100 = six or
+  /// seven times, 95 = five times).
+  ///
+  /// The weight of scoreMeetDailyTargets in activity score calculation is 0.25.
   final int scoreMeetDailyTargets;
+
+  /// This activity score contributor indicates how regularly the ring user has
+  /// had physical exercise the ring user has got during last seven days.
+  ///
+  /// The contributor value is 100 when the user has got more than 100 minutes
+  /// of medium or high intensity activity on at least four days during past
+  /// seven days. The contributor value is 95 when the user has got more than
+  /// 100 minutes of medium or high intensity activity on at least three days
+  /// during past seven days.
+  ///
+  /// The weight of scoreTrainingFrequency in activity score calculation is
+  /// 0.10.
   final int scoreTrainingFrequency;
+
+  /// This activity score contributor indicates how much physical exercise the
+  /// ring user has got during last seven days.
+  ///
+  /// The contributor value is 100 when thes sum of weekly MET minutes is over
+  /// 2000. The contributor value is 95 when the sum of weekly MET minutes is over
+  /// 750. There is a weighting function so that the effect of each day gradually
+  /// disappears.
+  ///
+  /// The weight of scoreTrainingVolume in activity score calculation is 0.15.
   final int scoreTrainingVolume;
+
+  /// This activity score contributor indicates if the user has got enough
+  /// recovery time during last seven days.
+  ///
+  /// The contributor value is 100 when: 1. The user has got at least two
+  /// recovery days during past 7 days. 2. No more than two days elapsed after
+  /// the latest recovery day.
+  ///
+  /// The contributor value is 95 when: 1. The user has got at least one
+  /// recovery day during past 7 days. 2. No more than three days elapsed after
+  /// the latest recovery day.
+  ///
+  /// Here a day is considered as a recovery day when amount of high intensity
+  /// activity did not exceed 100 MET minutes and amount of medium intensity
+  /// activity did not exceed 200 MET minutes. The exact limits will be age and
+  /// gender dependent.
+  ///
+  /// The weight of scoreRecoveryTime in activity score calculation is 0.25.
   final int scoreRecoveryTime;
+
+  /// Daily physical activity as equal meters i.e. amount of walking needed to
+  ///  get the same amount of activity.
   final int dailyMovement;
+
+  /// Number of minutes during the day when the user was not wearing the ring.
+  /// Can be used as a proxy for data accuracy, i.e. how well the measured
+  /// physical activity represents actual total activity of the ring user.
   final int nonWear;
+
+  /// Number of minutes during the day spent resting i.e. sleeping or lying
+  /// down (average MET level of the minute is below 1.05).
   final int rest;
+
+  /// Number of inactive minutes (sitting or standing still, average MET level
+  /// of the minute between 1.05 and 2) during the day.
   final int inactive;
+
+  /// Number of continuous inactive periods of 60 minutes or more during the
+  /// day.
   final int inactivityAlerts;
+
+  /// Number of minutes during the day with low intensity activity (e.g.
+  /// household work, average MET level of the minute between 2 and age
+  /// dependent limit).
   final int low;
+
+  /// Number of minutes during the day with medium intensity activity (e.g.
+  /// walking). The upper and lower MET level limits for medium intensity
+  /// activity depend on user's age and gender.
   final int medium;
+
+  /// Number of minutes during the day with high intensity activity (e.g.
+  /// running). The lower MET level limit for high intensity activity depends on
+  /// user's age and gender.
   final int high;
+
+  /// Total number of steps registered during the day.
   final int steps;
+
+  /// Total energy consumption during the day including Basal Metabolic Rate in
+  /// kilocalories.
   final int calTotal;
+
+  /// Energy consumption caused by the physical activity of the day in
+  /// kilocalories.
   final int calActive;
+
+  /// Total MET minutes accumulated during inactive minutes of the day.
   final int metMinInactive;
+
+  /// Total MET minutes accumulated during low intensity activity minutes of the
+  /// day.
   final int metMinLow;
+
+  /// Total MET minutes accumulated during medium and high intensity activity
+  /// minutes of the day.
   final int metMinMediumPlus;
+
+  /// Total MET minutes accumulated during medium intensity activity minutes of
+  /// the day.
   final int metMinMedium;
+
+  /// Total MET minutes accumulated during high intensity activity minutes of
+  /// the day.
   final int metMinHigh;
+
+  /// Average MET level during the whole day.
   final double averageMet;
+
+  /// A string that contains one character for each starting five minutes of the
+  /// activity period, so that the first period starts from 4 AM local time:
+  /// 0: Non-wear
+  /// 1: Rest (MET level below 1.05)
+  /// 2: Inactive (MET level between 1.05 and 2)
+  /// 3: Low intensity activity (MET level between 2 and age/gender dependent
+  ///    limit)
+  /// 4: Medium intensity activity
+  /// 5: High intensity activity
   final String class5min;
+
+  /// Average MET level for each minute of the activity period, starting from 4
+  /// AM local time.
   final List<double> met1min;
+
+  /// Indicates whether Rest Mode was enabled or recently enabled.
+  ///
+  /// **Note:** Missing for days before Rest Mode was available.
   final RestModeState restModeState;
 
   Activity copyWith({

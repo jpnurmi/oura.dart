@@ -1,6 +1,17 @@
 import 'enums.dart';
 import 'ext.dart';
 
+/// {@template oura.readiness}
+/// Readiness tells how ready you are for the day.
+///
+/// A Readiness Score above 85% indicates that you're well recovered. A score
+/// below 70% usually means that an essential Readiness Contributor, such as
+/// Body Temperature or previous night's sleep, falls outside your normal range,
+/// or clearly differs from recommended, science-based values.
+/// {@endtemplate}
+///
+/// See also:
+///  * [Oura.readiness]
 class Readiness {
   Readiness({
     required this.summaryDate,
@@ -17,17 +28,47 @@ class Readiness {
     required this.restModeState,
   });
 
+  /// One day prior to the date when the sleep period (that this readiness score
+  /// takes into account) ended.
+  ///
+  /// **Note:** this is one day before the date that is shown in the apps.
   final DateTime summaryDate;
+
+  /// Index of the sleep period among sleep periods with the same summary_date,
+  /// where 0 = first sleep period of the day. Each readinesss calculation is
+  /// associated with a sleep period.
   final int periodId;
+
+  /// 1-100, or 0 if not available.
   final int score;
+
+  /// 1-100, or 0 if not available.
   final int scorePreviousNight;
+
+  /// 1-100, or 0 if not available.
   final int scoreSleepBalance;
+
+  /// 1-100, or 0 if not available.
   final int scorePreviousDay;
+
+  /// 1-100, or 0 if not available.
   final int scoreActivityBalance;
+
+  /// 1-100, or 0 if not available.
   final int scoreRestingHr;
+
+  /// 1-100, or 0 if not available.
   final int scoreHrvBalance;
+
+  /// 1-100, or 0 if not available.
   final int scoreRecoveryIndex;
+
+  /// 1-100, or 0 if not available.
   final int scoreTemperature;
+
+  /// Indicates whether Rest Mode was enabled or recently enabled.
+  ///
+  /// **Note:** Missing for days before Rest Mode was available.
   final RestModeState restModeState;
 
   Readiness copyWith({

@@ -1,5 +1,12 @@
 import 'enums.dart';
 
+/// {@template oura.user}
+/// If the user has granted an access to personal info, you can fetch it with
+/// the following call. The response contains data in metric units (kg, cm).
+/// {@endtemplate}
+///
+/// See also:
+///  * [Oura.user]
 class User {
   User({
     required this.age,
