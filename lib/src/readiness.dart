@@ -1,4 +1,5 @@
 import 'enums.dart';
+import 'ext.dart';
 
 class Readiness {
   Readiness({
@@ -16,7 +17,7 @@ class Readiness {
     required this.restModeState,
   });
 
-  final String summaryDate;
+  final DateTime summaryDate;
   final int periodId;
   final int score;
   final int scorePreviousNight;
@@ -30,7 +31,7 @@ class Readiness {
   final RestModeState restModeState;
 
   Readiness copyWith({
-    String? summaryDate,
+    DateTime? summaryDate,
     int? periodId,
     int? score,
     int? scorePreviousNight,
@@ -61,7 +62,7 @@ class Readiness {
 
   Map<String, dynamic> toJson() {
     return {
-      'summary_date': summaryDate,
+      'summary_date': summaryDate.toDateString(),
       'period_id': periodId,
       'score': score,
       'score_previous_night': scorePreviousNight,
@@ -78,7 +79,7 @@ class Readiness {
 
   factory Readiness.fromJson(Map<String, dynamic> json) {
     return Readiness(
-      summaryDate: json['summary_date'] ?? '',
+      summaryDate: DateTimeX.parse(json['summary_date'] ?? ''),
       periodId: json['period_id'] ?? 0,
       score: json['score'] ?? 0,
       scorePreviousNight: json['score_previous_night'] ?? 0,
@@ -95,14 +96,14 @@ class Readiness {
 
   @override
   String toString() {
-    return 'Readiness(summary_date: $summaryDate, period_id: $periodId, score: $score, score_previous_night: $scorePreviousNight, score_sleep_balance: $scoreSleepBalance, score_previous_day: $scorePreviousDay, score_activity_balance: $scoreActivityBalance, score_resting_hr: $scoreRestingHr, score_hrv_balance: $scoreHrvBalance, score_recovery_index: $scoreRecoveryIndex, score_temperature: $scoreTemperature, rest_mode_state: $restModeState)';
+    return 'Readiness(summary_date: ${summaryDate.toDateString()}, period_id: $periodId, score: $score, score_previous_night: $scorePreviousNight, score_sleep_balance: $scoreSleepBalance, score_previous_day: $scorePreviousDay, score_activity_balance: $scoreActivityBalance, score_resting_hr: $scoreRestingHr, score_hrv_balance: $scoreHrvBalance, score_recovery_index: $scoreRecoveryIndex, score_temperature: $scoreTemperature, rest_mode_state: $restModeState)';
   }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
     return other is Readiness &&
-        other.summaryDate == summaryDate &&
+        other.summaryDate.toDateString() == summaryDate.toDateString() &&
         other.periodId == periodId &&
         other.score == score &&
         other.scorePreviousNight == scorePreviousNight &&
@@ -119,7 +120,7 @@ class Readiness {
   @override
   int get hashCode {
     return Object.hashAll([
-      summaryDate,
+      summaryDate.toDateString(),
       periodId,
       score,
       scorePreviousNight,

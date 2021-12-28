@@ -1,6 +1,7 @@
 import 'package:collection/collection.dart';
 
 import 'enums.dart';
+import 'ext.dart';
 
 class Activity {
   Activity({
@@ -37,9 +38,9 @@ class Activity {
     required this.restModeState,
   });
 
-  final String summaryDate;
-  final String dayStart;
-  final String dayEnd;
+  final DateTime summaryDate;
+  final DateTime dayStart;
+  final DateTime dayEnd;
   final int timezone;
   final int score;
   final int scoreStayActive;
@@ -70,9 +71,9 @@ class Activity {
   final RestModeState restModeState;
 
   Activity copyWith({
-    String? summaryDate,
-    String? dayStart,
-    String? dayEnd,
+    DateTime? summaryDate,
+    DateTime? dayStart,
+    DateTime? dayEnd,
     int? timezone,
     int? score,
     int? scoreStayActive,
@@ -141,9 +142,9 @@ class Activity {
 
   Map<String, dynamic> toJson() {
     return {
-      'summary_date': summaryDate,
-      'day_start': dayStart,
-      'day_end': dayEnd,
+      'summary_date': summaryDate.toDateString(),
+      'day_start': dayStart.toString(),
+      'day_end': dayEnd.toString(),
       'timezone': timezone,
       'score': score,
       'score_stay_active': scoreStayActive,
@@ -177,9 +178,9 @@ class Activity {
 
   factory Activity.fromJson(Map<String, dynamic> json) {
     return Activity(
-      summaryDate: json['summary_date'] ?? '',
-      dayStart: json['day_start'] ?? '',
-      dayEnd: json['day_end'] ?? '',
+      summaryDate: DateTimeX.parse(json['summary_date'] ?? ''),
+      dayStart: DateTimeX.parse(json['day_start'] ?? ''),
+      dayEnd: DateTimeX.parse(json['day_end'] ?? ''),
       timezone: json['timezone'] ?? 0,
       score: json['score'] ?? 0,
       scoreStayActive: json['score_stay_active'] ?? 0,
@@ -221,7 +222,7 @@ class Activity {
     if (identical(this, other)) return true;
     final listEquals = const DeepCollectionEquality().equals;
     return other is Activity &&
-        other.summaryDate == summaryDate &&
+        other.summaryDate.toDateString() == summaryDate.toDateString() &&
         other.dayStart == dayStart &&
         other.dayEnd == dayEnd &&
         other.timezone == timezone &&
@@ -257,7 +258,7 @@ class Activity {
   @override
   int get hashCode {
     return Object.hashAll([
-      summaryDate,
+      summaryDate.toDateString(),
       dayStart,
       dayEnd,
       timezone,

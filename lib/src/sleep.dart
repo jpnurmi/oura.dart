@@ -225,7 +225,7 @@ class Sleep {
     if (identical(this, other)) return true;
     final listEquals = const DeepCollectionEquality().equals;
     return other is Sleep &&
-        other.summaryDate == summaryDate &&
+        other.summaryDate.toDateString() == summaryDate.toDateString() &&
         other.periodId == periodId &&
         other.isLongest == isLongest &&
         other.timezone == timezone &&
@@ -262,7 +262,7 @@ class Sleep {
   @override
   int get hashCode {
     return Object.hashAll([
-      summaryDate,
+      summaryDate.toDateString(),
       periodId,
       isLongest,
       timezone,
