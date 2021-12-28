@@ -42,7 +42,7 @@ class Bedtime {
 
   @override
   String toString() {
-    return 'Bedtime(date: ${date.toDateString()}, bedtime_window: $bedtimeWindow, status: $status)';
+    return 'Bedtime(date: ${date.toDateString()}, bedtimeWindow: $bedtimeWindow, status: $status)';
   }
 
   @override

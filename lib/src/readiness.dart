@@ -96,7 +96,7 @@ class Readiness {
 
   @override
   String toString() {
-    return 'Readiness(summary_date: ${summaryDate.toDateString()}, period_id: $periodId, score: $score, score_previous_night: $scorePreviousNight, score_sleep_balance: $scoreSleepBalance, score_previous_day: $scorePreviousDay, score_activity_balance: $scoreActivityBalance, score_resting_hr: $scoreRestingHr, score_hrv_balance: $scoreHrvBalance, score_recovery_index: $scoreRecoveryIndex, score_temperature: $scoreTemperature, rest_mode_state: $restModeState)';
+    return 'Readiness(summaryDate: ${summaryDate.toDateString()}, periodId: $periodId, score: $score, scorePreviousNight: $scorePreviousNight, scoreSleepBalance: $scoreSleepBalance, scorePreviousDay: $scorePreviousDay, scoreActivityBalance: $scoreActivityBalance, scoreRestingHr: $scoreRestingHr, scoreHrvBalance: $scoreHrvBalance, scoreRecoveryIndex: $scoreRecoveryIndex, scoreTemperature: $scoreTemperature, restModeState: $restModeState)';
   }
 
   @override
