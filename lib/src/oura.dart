@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import 'ext.dart';
 import 'activity.dart';
 import 'sleep.dart';
 import 'user.dart';
@@ -13,8 +14,12 @@ class Oura {
 
   final String token;
 
-  Future<http.Response> get(String path) {
-    return http.get(Uri.https(kUrl, 'v1/$path', {'access_token': token}));
+  Future<http.Response> get(String path, {DateTime? start, DateTime? end}) {
+    return http.get(Uri.https(kUrl, 'v1/$path', {
+      'access_token': token,
+      if (start != null) 'start': start.toDateString(),
+      if (end != null) 'end': end.toDateString(),
+    }));
   }
 
   Future<User> user() async {
@@ -22,14 +27,14 @@ class Oura {
     return User.fromJson(json.decode(response.body));
   }
 
-  Future<List<Activity>> activity() async {
-    final response = await get('activity');
+  Future<List<Activity>> activity({DateTime? start, DateTime? end}) async {
+    final response = await get('activity', start: start, end: end);
     final activity = json.decode(response.body)['activity'] as List;
     return activity.map((activity) => Activity.fromJson(activity)).toList();
   }
 
-  Future<List<Sleep>> sleep() async {
-    final response = await get('sleep');
+  Future<List<Sleep>> sleep({DateTime? start, DateTime? end}) async {
+    final response = await get('sleep', start: start, end: end);
     final sleep = json.decode(response.body)['sleep'] as List;
     return sleep.map((sleep) => Sleep.fromJson(sleep)).toList();
   }
