@@ -1,12 +1,6 @@
 import 'package:collection/collection.dart';
 
-enum RestModeState {
-  off,
-  enteringRestMode,
-  restMode,
-  enteringRecovery,
-  recovering,
-}
+import 'enums.dart';
 
 class Activity {
   Activity({

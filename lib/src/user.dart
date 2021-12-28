@@ -1,4 +1,4 @@
-enum Gender { male, female, other }
+import 'enums.dart';
 
 class User {
   User({

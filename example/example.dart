@@ -9,4 +9,5 @@ Future<void> main() async {
   print('user: ${await oura.user()}');
   print('sleep: ${await oura.sleep()}');
   print('activity: ${await oura.activity()}');
+  print('readiness: ${await oura.readiness()}');
 }
