@@ -8,4 +8,5 @@ Future<void> main() async {
   final oura = Oura(token: token!);
   print('user: ${await oura.user()}');
   print('sleep: ${await oura.sleep()}');
+  print('activity: ${await oura.activity()}');
 }

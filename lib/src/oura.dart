@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 
+import 'activity.dart';
 import 'sleep.dart';
 import 'user.dart';
 
@@ -19,6 +20,12 @@ class Oura {
   Future<User> user() async {
     final response = await get('userinfo');
     return User.fromJson(json.decode(response.body));
+  }
+
+  Future<List<Activity>> activity() async {
+    final response = await get('activity');
+    final activity = json.decode(response.body)['activity'] as List;
+    return activity.map((activity) => Activity.fromJson(activity)).toList();
   }
 
   Future<List<Sleep>> sleep() async {
