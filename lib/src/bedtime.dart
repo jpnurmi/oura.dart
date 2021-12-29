@@ -20,7 +20,7 @@ import 'ext.dart';
 class Bedtime {
   Bedtime({
     required this.date,
-    required this.bedtimeWindow,
+    required this.window,
     required this.status,
   });
 
@@ -28,19 +28,19 @@ class Bedtime {
   final DateTime date;
 
   /// The ideal bedtime window.
-  final BedtimeWindow bedtimeWindow;
+  final BedtimeWindow window;
 
   /// The status indicates whether an ideal bedtime window is available and a reason if not.
   final BedtimeStatus status;
 
   Bedtime copyWith({
     DateTime? date,
-    BedtimeWindow? bedtimeWindow,
+    BedtimeWindow? window,
     BedtimeStatus? status,
   }) {
     return Bedtime(
       date: date ?? this.date,
-      bedtimeWindow: bedtimeWindow ?? this.bedtimeWindow,
+      window: window ?? this.window,
       status: status ?? this.status,
     );
   }
@@ -48,7 +48,7 @@ class Bedtime {
   Map<String, dynamic> toJson() {
     return {
       'date': date.toDateString(),
-      'bedtime_window': bedtimeWindow.toJson(),
+      'bedtime_window': window.toJson(),
       'status': status.toStatusString(),
     };
   }
@@ -56,14 +56,14 @@ class Bedtime {
   factory Bedtime.fromJson(Map<String, dynamic> json) {
     return Bedtime(
       date: DateTimeX.parse(json['date'] ?? ''),
-      bedtimeWindow: BedtimeWindow.fromJson(json['bedtime_window']),
+      window: BedtimeWindow.fromJson(json['bedtime_window']),
       status: BedtimeStatusX.parse(json['status'] ?? ''),
     );
   }
 
   @override
   String toString() {
-    return 'Bedtime(date: ${date.toDateString()}, bedtimeWindow: $bedtimeWindow, status: $status)';
+    return 'Bedtime(date: ${date.toDateString()}, window: $window, status: $status)';
   }
 
   @override
@@ -71,12 +71,12 @@ class Bedtime {
     if (identical(this, other)) return true;
     return other is Bedtime &&
         other.date.toDateString() == date.toDateString() &&
-        other.bedtimeWindow == bedtimeWindow &&
+        other.window == window &&
         other.status == status;
   }
 
   @override
-  int get hashCode => Object.hash(date.toDateString(), bedtimeWindow, status);
+  int get hashCode => Object.hash(date.toDateString(), window, status);
 }
 
 /// The beginning and end of the ideal bedtime window.
