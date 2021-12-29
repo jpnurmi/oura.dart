@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 
 import 'activity.dart';
 import 'bedtime.dart';
+import 'exceptions.dart';
 import 'ext.dart';
 import 'readiness.dart';
 import 'sleep.dart';
@@ -32,12 +33,27 @@ class Oura {
   final String _token;
 
   /// @internal
-  Future<http.Response> get(String path, {DateTime? start, DateTime? end}) {
-    return http.get(Uri.https(kUrl, 'v1/$path', {
-      'access_token': _token,
-      if (start != null) 'start': start.toDateString(),
-      if (end != null) 'end': end.toDateString(),
-    }));
+  Future<http.Response> get(String path,
+      {DateTime? start, DateTime? end}) async {
+    try {
+      final response = await http.get(Uri.https(kUrl, 'v1/$path', {
+        'access_token': _token,
+        if (start != null) 'start': start.toDateString(),
+        if (end != null) 'end': end.toDateString(),
+      }));
+      if (response.statusCode != 200) {
+        final body = json.decode(response.body);
+        throw OuraException(
+          status: body['status'],
+          title: body['title'],
+          detail: body['detail'],
+        );
+      }
+      return response;
+    } on http.ClientException catch (e) {
+      // https://github.com/dart-lang/sdk/issues/46442
+      throw OuraException(status: 401, title: 'Unauthorized');
+    }
   }
 
   /// {@macro oura.activity}
